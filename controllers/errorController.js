@@ -9,9 +9,17 @@ const sendErrorDev = (err, res) => {
   });
 };
 
+const handleDuplicateFields = (err) => {
+  const value = err.keyValue.email;
+  const message = `Duplicate field used: ${value} `;
+  return new AppError(message, 400);
+};
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
-  sendErrorDev(err, res);
+  let error = { ...err };
+  if (error.code === 11000) error = handleDuplicateFields(error);
+  sendErrorDev(error, res);
 };
