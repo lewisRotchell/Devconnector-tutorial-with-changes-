@@ -21,17 +21,7 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
-  passwordConfirm: {
-    type: String,
-    required: [true, "Please confirm your password"],
-    validate: {
-      //This only works on CREATE & SAVE
-      validator: function (el) {
-        return el === this.password;
-      },
-      message: "Passwords are not the same",
-    },
-  },
+
   avatar: {
     type: String,
   },
@@ -39,6 +29,16 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+userSchema.pre("save", async function (next) {
+  //if password was modified
+  if (!this.isModified("password")) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+  next();
 });
 
 module.exports = User = mongoose.model("User", userSchema);

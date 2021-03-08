@@ -1,25 +1,33 @@
 const AppError = require("../utils/appError");
 
-const sendErrorDev = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack,
+const errorHandler = (err, req, res, next) => {
+  let error = { ...err };
+
+  error.message = err.message;
+  //Log to console for dev
+  console.log(error);
+
+  //Mongoose bad object ID
+  if (err.name === "CastError") {
+    const message = `Resource not found with id of ${err.value}`;
+    error = new AppError(message, 404);
+  }
+
+  //Mongoose duplicate key
+  if (err.code === 11000) {
+    const message = `Duplicate field value entered`;
+    error = new AppError(message, 400);
+  }
+
+  if (err.name === "ValidationError") {
+    const message = Object.values(error.errors).map((val) => val.message);
+    error = new AppError(message, 400);
+  }
+
+  res.status(error.statusCode || 500).json({
+    success: false,
+    error: error.message || "Server Error",
   });
 };
 
-const handleDuplicateFields = (err) => {
-  const value = err.keyValue.email;
-  const message = `Duplicate field used: ${value} `;
-  return new AppError(message, 400);
-};
-
-module.exports = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
-
-  let error = { ...err };
-  if (error.code === 11000) error = handleDuplicateFields(error);
-  sendErrorDev(error, res);
-};
+module.exports = errorHandler;
