@@ -4,6 +4,11 @@ const AppError = require("../utils/appError");
 const gravatar = require("gravatar");
 
 exports.register = catchAsync(async (req, res, next) => {
+  let user = await User.findOne({ email: req.body.email });
+  if (user) {
+    return next(new AppError("User already exists", 400));
+  }
+
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
