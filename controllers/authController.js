@@ -4,25 +4,40 @@ const AppError = require("../utils/appError");
 const gravatar = require("gravatar");
 
 exports.register = catchAsync(async (req, res, next) => {
-  let user = await User.findOne({ email: req.body.email });
+  const { name, email, password } = req.body;
+
+  let user = await User.findOne({ email });
+
   if (user) {
     return next(new AppError("User already exists", 400));
   }
 
   const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    avatar: gravatar.url(req.body.email, {
+    name,
+    email,
+    password,
+    avatar: gravatar.url(email, {
       s: "200",
       r: "pg",
       d: "mm",
     }),
   });
-  res.status(201).json({
-    status: "success",
-    data: {
-      user: newUser,
-    },
+
+  const token = newUser.getSignedJwtToken();
+
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === "production") {
+    options.secure = true;
+  }
+
+  res.status(201).cookie("token", token, options).json({
+    status: true,
+    token,
   });
 });
