@@ -9,7 +9,11 @@ const errorHandler = (err, req, res, next) => {
 
   //Mongoose bad object ID
   if (err.name === "CastError") {
-    const message = `Resource not found with id of ${err.value}`;
+    let message;
+    message = `Resource not found with id of ${err.value}`;
+    // if (err.kind == "ObjectId") {
+    //   message = "Profile not found";
+    // }
     error = new AppError(message, 404);
   }
 

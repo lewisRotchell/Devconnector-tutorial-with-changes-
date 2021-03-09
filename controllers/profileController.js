@@ -21,6 +21,7 @@ exports.myProfile = catchAsync(async (req, res, next) => {
 
 exports.createProfile = catchAsync(async (req, res, next) => {
   const {
+    status,
     website,
     skills,
     youtube,
@@ -29,11 +30,20 @@ exports.createProfile = catchAsync(async (req, res, next) => {
     linkedin,
     instagram,
   } = req.body;
+
+  if (!status) {
+    return next(new AppError("status is required"));
+  }
+
+  if (!skills) {
+    return next(new AppError("skills are required"));
+  }
+
   const profileFields = {
     user: req.user.id,
     website:
       website && website !== ""
-        ? normalizeUrl(website, { forceHTTPS: true })
+        ? normalizeUrl(website, { forceHttps: true })
         : "",
     skills: skills.split(",").map((skill) => " " + skill.trim()),
     ...req.body,
@@ -45,7 +55,7 @@ exports.createProfile = catchAsync(async (req, res, next) => {
   // normalize social fields to ensure valid url
   for (const [key, value] of Object.entries(socialFields)) {
     if (value && value.length > 0)
-      socialFields[key] = normalize(value, { forceHttps: true });
+      socialFields[key] = normalizeUrl(value, { forceHttps: true });
   }
   // add to profileFields
   profileFields.social = socialFields;
@@ -57,6 +67,29 @@ exports.createProfile = catchAsync(async (req, res, next) => {
   );
 
   res.status(201).json({
+    success: true,
+    data: profile,
+  });
+});
+
+exports.getProfiles = catchAsync(async (req, res, next) => {
+  const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+  res.status(200).json({
+    success: true,
+    data: profiles,
+  });
+});
+
+exports.getProfile = catchAsync(async (req, res, next) => {
+  const profile = await Profile.findOne({
+    user: req.params.user_id,
+  }).populate("user", ["name", "avatar"]);
+
+  if (!profile) {
+    return next(new AppError("profile does not exist"));
+  }
+
+  res.status(200).json({
     success: true,
     data: profile,
   });
