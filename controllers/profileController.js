@@ -76,6 +76,7 @@ exports.getProfiles = catchAsync(async (req, res, next) => {
   const profiles = await Profile.find().populate("user", ["name", "avatar"]);
   res.status(200).json({
     success: true,
+    count: profiles.length,
     data: profiles,
   });
 });
@@ -92,5 +93,17 @@ exports.getProfile = catchAsync(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: profile,
+  });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  //Remove profile
+  await Profile.findOneAndRemove({ user: req.user.id });
+  //Remove user
+  await Profile.findOneAndRemove({ _id: req.user.id });
+
+  res.status(200).json({
+    success: true,
+    data: {},
   });
 });
