@@ -23,7 +23,42 @@ exports.register = catchAsync(async (req, res, next) => {
     }),
   });
 
-  const token = newUser.getSignedJwtToken();
+  sendTokenResponse(newUser, 201, res);
+});
+
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  //Validate email and password
+  if (!email || !password) {
+    return next(new AppError("please provide an email and password", 400));
+  }
+
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    return next(new AppError("Invalid credentials", 401));
+  }
+
+  //Check if password matches
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    return next(new AppError("Invalid credentials", 401));
+  }
+
+  sendTokenResponse(user, 201, res);
+});
+
+const sendTokenResponse = (user, statusCode, res) => {
+  const token = user.getSignedJwtToken();
 
   const options = {
     expires: new Date(
@@ -36,16 +71,8 @@ exports.register = catchAsync(async (req, res, next) => {
     options.secure = true;
   }
 
-  res.status(201).cookie("token", token, options).json({
+  res.status(statusCode).cookie("token", token, options).json({
     status: true,
     token,
   });
-});
-
-exports.getMe = catchAsync(async (req, res, next) => {
-  const user = req.user;
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
-});
+};
