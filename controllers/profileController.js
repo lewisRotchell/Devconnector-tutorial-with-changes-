@@ -3,6 +3,7 @@ const Profile = require("../models/Profile");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const normalizeUrl = require("normalize-url");
+const axios = require("axios");
 
 exports.myProfile = catchAsync(async (req, res, next) => {
   const profile = await Profile.findOne({ user: req.user.id }).populate(
@@ -183,5 +184,22 @@ exports.deleteEducation = catchAsync(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: profile,
+  });
+});
+
+exports.getGithub = catchAsync(async (req, res, next) => {
+  const uri = encodeURI(
+    `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+  );
+  const headers = {
+    "user-agent": "node.js",
+    Authorization: `token ${process.env.GITHUB_PAT}`,
+  };
+
+  const gitHubResponse = await axios.get(uri, { headers });
+
+  res.status(200).json({
+    success: true,
+    data: gitHubResponse.data,
   });
 });

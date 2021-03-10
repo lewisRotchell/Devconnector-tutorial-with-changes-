@@ -28,6 +28,12 @@ const errorHandler = (err, req, res, next) => {
     error = new AppError(message, 400);
   }
 
+  //
+  if (err.isAxiosError === true) {
+    const message = `No github profile found`;
+    error = new AppError(message, 404);
+  }
+
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || "Server Error",
