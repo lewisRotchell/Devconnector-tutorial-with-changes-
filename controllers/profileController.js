@@ -100,10 +100,88 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   //Remove profile
   await Profile.findOneAndRemove({ user: req.user.id });
   //Remove user
-  await Profile.findOneAndRemove({ _id: req.user.id });
+  await User.findOneAndRemove({ _id: req.user.id });
 
   res.status(200).json({
     success: true,
     data: {},
+  });
+});
+
+exports.addExperience = catchAsync(async (req, res, next) => {
+  const newExp = {
+    ...req.body,
+  };
+
+  const profile = await Profile.findOne({ user: req.user.id });
+
+  profile.experience.unshift(newExp);
+
+  await profile.save();
+
+  res.status(200).json({
+    success: true,
+    data: profile,
+  });
+});
+
+exports.deleteExperience = catchAsync(async (req, res, next) => {
+  const profile = await Profile.findOne({ user: req.user.id });
+
+  //Get remove index
+  const removeIndex = profile.experience
+    .map((item) => item.id)
+    .indexOf(req.params.exp_id);
+
+  if (removeIndex === -1) {
+    return next(new AppError("There is no experience with this ID"));
+  }
+
+  profile.experience.splice(removeIndex, 1);
+
+  await profile.save();
+
+  res.status(200).json({
+    success: true,
+    data: profile,
+  });
+});
+
+exports.addEducation = catchAsync(async (req, res, next) => {
+  const newEd = {
+    ...req.body,
+  };
+
+  const profile = await Profile.findOne({ user: req.user.id });
+
+  profile.education.unshift(newEd);
+
+  await profile.save();
+
+  res.status(200).json({
+    success: true,
+    data: profile,
+  });
+});
+
+exports.deleteEducation = catchAsync(async (req, res, next) => {
+  const profile = await Profile.findOne({ user: req.user.id });
+
+  //Get remove index
+  const removeIndex = profile.education
+    .map((item) => item.id)
+    .indexOf(req.params.ed_id);
+
+  if (removeIndex === -1) {
+    return next(new AppError("There is no education with this ID"));
+  }
+
+  profile.education.splice(removeIndex, 1);
+
+  await profile.save();
+
+  res.status(200).json({
+    success: true,
+    data: profile,
   });
 });

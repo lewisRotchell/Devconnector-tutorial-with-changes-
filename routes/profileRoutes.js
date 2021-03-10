@@ -7,6 +7,10 @@ const {
   getProfiles,
   getProfile,
   deleteUser,
+  addExperience,
+  deleteExperience,
+  addEducation,
+  deleteEducation,
 } = require("../controllers/profileController");
 const { protect } = require("../middleware/auth");
 
@@ -17,5 +21,9 @@ router
   .post(protect, createProfile)
   .delete(protect, deleteUser);
 router.route("/user/:user_id").get(getProfile);
+router.put("/experience", protect, addExperience);
+router.delete("/experience/:exp_id", protect, deleteExperience);
+router.put("/education", protect, addEducation);
+router.delete("/education/:ed_id", protect, deleteEducation);
 
 module.exports = router;
