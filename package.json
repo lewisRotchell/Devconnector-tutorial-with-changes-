@@ -4,7 +4,10 @@
   "description": "Social network for devs (tutorial but i will be changing things) ",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "lewis",
   "license": "ISC",
