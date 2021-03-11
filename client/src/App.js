@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -8,16 +7,17 @@ import Navbar from "./components/layout/Navbar";
 
 const App = () => {
   return (
-    <Fragment className="App">
+    <div className="App">
       <Navbar />
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <section className="container">
+
+      <Route exact path="/" component={Landing} />
+      <section className="container">
+        <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
-        </section>
-      </Switch>
-    </Fragment>
+        </Switch>
+      </section>
+    </div>
   );
 };
 

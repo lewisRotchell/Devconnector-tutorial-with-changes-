@@ -14,7 +14,8 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
       console.log("Passwords do not match");
@@ -22,6 +23,7 @@ const Register = () => {
       console.log(formData);
     }
   };
+
   return (
     <Fragment>
       <h1 className="large text-primary">Sign Up</h1>
