@@ -9,17 +9,11 @@ import { setAlert } from "../alert/alertActions";
 import setAuthToken from "../../utils/setAuthToken";
 
 export const loadUser = () => async (dispatch) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
   try {
-    let res;
-    if (localStorage.token) {
-      // setAuthToken(localStorage.token);
-      res = await axios.get("/api/auth/me", {
-        headers: {
-          authorization: `Bearer ${localStorage.token}`,
-        },
-      });
-    }
-
+    const res = await axios.get("/api/auth/me");
     dispatch({
       type: USER_LOADED,
       payload: res.data,
@@ -29,6 +23,25 @@ export const loadUser = () => async (dispatch) => {
       type: AUTH_ERROR,
     });
   }
+  // try {
+  //   let res;
+  //   if (localStorage.token) {
+  //     res = await axios.get("/api/auth/me", {
+  //       headers: {
+  //         authorization: `Bearer ${localStorage.token}`,
+  //       },
+  //     });
+  //   }
+
+  //   dispatch({
+  //     type: USER_LOADED,
+  //     payload: res.data,
+  //   });
+  // } catch (err) {
+  //   dispatch({
+  //     type: AUTH_ERROR,
+  //   });
+  // }
 };
 
 export const register = ({ name, email, password }) => async (dispatch) => {
@@ -47,6 +60,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
+    dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.error.split(",");
     console.log(errors);

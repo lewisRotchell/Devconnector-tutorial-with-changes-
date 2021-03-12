@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../redux/alert/alertActions";
 import { register } from "../../redux/auth/authActions";
+import { loadUser } from "../../redux/auth/authActions";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -28,8 +29,6 @@ const Register = () => {
       dispatch(register(formData));
     }
   };
-
-  console.log(document.cookie);
 
   return (
     <Fragment>

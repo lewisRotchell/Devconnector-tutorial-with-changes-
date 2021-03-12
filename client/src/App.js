@@ -7,15 +7,22 @@ import Landing from "./components/layout/Landing";
 import Navbar from "./components/layout/Navbar";
 import Alert from "./components/layout/Alert";
 import { loadUser } from "./redux/auth/authActions";
-import setAuthToken from "./utils/setAuthToken";
 import { useDispatch } from "react-redux";
+import setAuthToken from "./utils/setAuthToken";
 
 const App = () => {
   const dispatch = useDispatch();
 
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
+
   useEffect(() => {
-    dispatch(loadUser());
+    if (localStorage.token) {
+      dispatch(loadUser());
+    }
   }, []);
+
   return (
     <div className="App">
       <Navbar />
