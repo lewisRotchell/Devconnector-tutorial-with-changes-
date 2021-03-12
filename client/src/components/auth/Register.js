@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../redux/alert/alertActions";
+import { register } from "../../redux/auth/authActions";
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -24,9 +25,11 @@ const Register = () => {
     if (password !== password2) {
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
-      console.log(formData);
+      dispatch(register(formData));
     }
   };
+
+  console.log(document.cookie);
 
   return (
     <Fragment>
