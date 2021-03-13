@@ -19,9 +19,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token) {
     return next(new AppError("Not authorized to access this route", 401));
   }
-  if (!token) {
-    return next(new ErrorResponse("Not authorized to access this route", 401));
-  }
 
   try {
     //verify token
