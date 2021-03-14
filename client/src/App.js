@@ -9,6 +9,8 @@ import Alert from "./components/layout/Alert";
 import { loadUser } from "./redux/auth/authActions";
 import { useDispatch } from "react-redux";
 import setAuthToken from "./utils/setAuthToken";
+import Dashboard from "./components/dashboard/Dashboard";
+import PrivateRoute from "./components/routing/PrivateRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,9 +20,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (localStorage.token) {
-      dispatch(loadUser());
-    }
+    dispatch(loadUser());
   }, []);
 
   return (
@@ -33,6 +33,7 @@ const App = () => {
         <Switch>
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
         </Switch>
       </section>
     </div>
