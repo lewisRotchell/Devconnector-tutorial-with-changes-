@@ -1,4 +1,9 @@
-import { GET_PROFILE, PROFILE_ERROR, CLEAR_PROFILE } from "./profileTypes";
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  CLEAR_PROFILE,
+  UPDATE_PROFILE,
+} from "./profileTypes";
 
 const initialState = {
   profile: null,
@@ -11,6 +16,7 @@ const initialState = {
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_PROFILE:
+    case UPDATE_PROFILE:
       return {
         ...state,
         profile: action.payload,

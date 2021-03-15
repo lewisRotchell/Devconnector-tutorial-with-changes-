@@ -12,6 +12,9 @@ import setAuthToken from "./utils/setAuthToken";
 import Dashboard from "./components/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import CreateProfile from "./components/profile-forms/CreateProfile";
+import EditProfile from "./components/profile-forms/EditProfile";
+import AddExperience from "./components/profile-forms/AddExperience";
+import AddEducation from "./components/profile-forms/AddEducation";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,6 +39,9 @@ const App = () => {
           <Route path="/login" component={Login} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
           <PrivateRoute path="/create-profile" component={CreateProfile} />
+          <PrivateRoute path="/edit-profile" component={EditProfile} />
+          <PrivateRoute path="/add-experience" component={AddExperience} />
+          <PrivateRoute path="/add-education" component={AddEducation} />
         </Switch>
       </section>
     </div>

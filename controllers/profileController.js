@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Profile = require("../models/Profile");
+const Post = require("../models/Post");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const normalizeUrl = require("normalize-url");
@@ -98,6 +99,8 @@ exports.getProfile = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
+  //Remove posts
+  await Post.deleteMany({ user: req.user.id });
   //Remove profile
   await Profile.findOneAndRemove({ user: req.user.id });
   //Remove user

@@ -6,10 +6,12 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  ACCOUNT_DELETED,
 } from "./authTypes";
 import axios from "axios";
 import { setAlert } from "../alert/alertActions";
 import { clearProfile } from "../profile/profileActions";
+import { profileError } from "../profile/profileActions";
 import setAuthToken from "../../utils/setAuthToken";
 
 export const loadUser = () => async (dispatch) => {
@@ -93,4 +95,19 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch(clearProfile());
   dispatch({ type: LOGOUT });
+};
+
+export const deleteAccount = () => async (dispatch) => {
+  if (window.confirm("Are you sure? This can NOT be undone")) {
+    try {
+      const res = await axios.delete(`/api/profile`);
+
+      dispatch(clearProfile());
+      dispatch({ type: ACCOUNT_DELETED });
+
+      dispatch(setAlert("Your account has been permanantly deleted"));
+    } catch (err) {
+      dispatch(profileError(err));
+    }
+  }
 };
