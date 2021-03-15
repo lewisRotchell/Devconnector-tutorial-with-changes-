@@ -32,13 +32,13 @@ exports.createProfile = catchAsync(async (req, res, next) => {
     instagram,
   } = req.body;
 
-  if (!status) {
-    return next(new AppError("status is required"));
+  if (!status || !skills) {
+    return next(new AppError("status and skills are required", 400));
   }
 
-  if (!skills) {
-    return next(new AppError("skills are required"));
-  }
+  // if (!skills) {
+  //   return next(new AppError("skills are required", 400));
+  // }
 
   const profileFields = {
     user: req.user.id,

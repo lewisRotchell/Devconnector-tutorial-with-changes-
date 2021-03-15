@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import setAuthToken from "./utils/setAuthToken";
 import Dashboard from "./components/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import CreateProfile from "./components/profile-forms/CreateProfile";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/create-profile" component={CreateProfile} />
         </Switch>
       </section>
     </div>
