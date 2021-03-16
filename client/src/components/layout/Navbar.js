@@ -5,7 +5,7 @@ import { logout } from "../../redux/auth/authActions";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const authLinks = (
     <ul>

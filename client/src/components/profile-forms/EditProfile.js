@@ -46,6 +46,7 @@ const EditProfile = ({ history }) => {
         profileData.skills = profileData.skills.join(", ");
       setFormData(profileData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   const {

@@ -13,6 +13,7 @@ const Profiles = () => {
 
   useEffect(() => {
     dispatch(getProfiles());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Fragment>

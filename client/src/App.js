@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import "./App.css";
@@ -16,6 +16,7 @@ import EditProfile from "./components/profile-forms/EditProfile";
 import AddExperience from "./components/profile-forms/AddExperience";
 import AddEducation from "./components/profile-forms/AddEducation";
 import Profiles from "./components/profiles/Profiles";
+import Profile from "./components/profile/Profile";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loadUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/profiles" component={Profiles} />
+          <Route path="/profile/:id" component={Profile} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
           <PrivateRoute path="/create-profile" component={CreateProfile} />
           <PrivateRoute path="/edit-profile" component={EditProfile} />
