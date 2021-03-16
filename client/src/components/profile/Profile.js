@@ -11,7 +11,7 @@ import ProfileGithub from "./ProfileGithub";
 const Profile = ({ match }) => {
   const dispatch = useDispatch();
 
-  const profile = useSelector((state) => state.profile.profile.data);
+  const profile = useSelector((state) => state.profile.profile);
   const loading = useSelector((state) => state.profile.loading);
   const auth = useSelector((state) => state.auth);
 
@@ -48,13 +48,13 @@ const Profile = ({ match }) => {
               </Link>
             )}
           <div className="profile-grid my-1">
-            <ProfileTop profile={profile} />
-            <ProfileAbout profile={profile} />
+            <ProfileTop profile={profile.data} />
+            <ProfileAbout profile={profile.data} />
             <div className="profile-exp bg-white p-2">
               <h2 className="text-primary">Experience</h2>
-              {profile.experience.length > 0 ? (
+              {profile.data.experience.length > 0 ? (
                 <Fragment>
-                  {profile.experience.map((experience) => (
+                  {profile.data.experience.map((experience) => (
                     <ProfileExperience
                       key={experience._id}
                       experience={experience}
@@ -68,9 +68,9 @@ const Profile = ({ match }) => {
 
             <div className="profile-edu bg-white p-2">
               <h2 className="text-primary">Education</h2>
-              {profile.education.length > 0 ? (
+              {profile.data.education.length > 0 ? (
                 <Fragment>
-                  {profile.education.map((education) => (
+                  {profile.data.education.map((education) => (
                     <ProfileEducation
                       key={education._id}
                       education={education}
