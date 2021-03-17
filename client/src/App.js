@@ -17,6 +17,7 @@ import AddExperience from "./components/profile-forms/AddExperience";
 import AddEducation from "./components/profile-forms/AddEducation";
 import Profiles from "./components/profiles/Profiles";
 import Profile from "./components/profile/Profile";
+import Posts from "./components/posts/Posts";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const App = () => {
           <PrivateRoute path="/edit-profile" component={EditProfile} />
           <PrivateRoute path="/add-experience" component={AddExperience} />
           <PrivateRoute path="/add-education" component={AddEducation} />
+          <PrivateRoute path="/posts" component={Posts} />
         </Switch>
       </section>
     </div>
