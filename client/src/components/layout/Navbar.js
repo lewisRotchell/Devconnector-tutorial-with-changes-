@@ -7,6 +7,11 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
 
+  const handleLogout = () => {
+    dispatch(logout());
+    window.location.reload();
+  };
+
   const authLinks = (
     <ul>
       <li>
@@ -22,7 +27,7 @@ const Navbar = () => {
         </Link>
       </li>
       <li>
-        <a onClick={() => dispatch(logout())} href="#!">
+        <a onClick={handleLogout} href="#!">
           <i className="fas fa-sign-out-alt" />{" "}
           <span className="hide-sm">Logout</span>
         </a>

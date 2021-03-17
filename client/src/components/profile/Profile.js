@@ -82,8 +82,8 @@ const Profile = ({ match }) => {
               )}
             </div>
 
-            {profile.githubusername && (
-              <ProfileGithub username={profile.githubusername} />
+            {profile.data.githubusername && (
+              <ProfileGithub username={profile.data.githubusername} />
             )}
           </div>
         </Fragment>
