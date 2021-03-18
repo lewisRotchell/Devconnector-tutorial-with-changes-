@@ -10,6 +10,8 @@ import {
   REMOVE_COMMENT,
 } from "./postTypes";
 
+import { setAlert } from "../alert/alertActions";
+
 export const getPosts = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/posts");
@@ -51,6 +53,24 @@ export const removeLike = (postId) => async (dispatch) => {
       type: UPDATE_LIKES,
       payload: { postId, likes: res.data.data },
     });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response, status: err.response },
+    });
+  }
+};
+
+export const deletePost = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/posts/${id}`);
+    console.log(res.data.data);
+    dispatch({
+      type: DELETE_POST,
+      payload: id,
+    });
+    dispatch(setAlert("Post Removed", "success"));
   } catch (err) {
     console.log(err);
     dispatch({

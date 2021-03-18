@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import formatDate from "../../utils/formatDate";
-import { addLike, removeLike } from "../../redux/post/postActions";
+import { addLike, removeLike, deletePost } from "../../redux/post/postActions";
 import { useSelector, useDispatch } from "react-redux";
 
 const PostItem = ({
@@ -45,7 +45,11 @@ const PostItem = ({
           )}
         </Link>
         {!auth.loading && user === auth.user.data._id && (
-          <button type="button" className="btn btn-danger">
+          <button
+            onClick={() => dispatch(deletePost(_id))}
+            type="button"
+            className="btn btn-danger"
+          >
             <i className="fas fa-times" />
           </button>
         )}

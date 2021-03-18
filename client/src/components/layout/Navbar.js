@@ -1,15 +1,15 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/auth/authActions";
 
-const Navbar = () => {
+const Navbar = ({ history }) => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
-    window.location.reload();
+    // window.location.reload();
   };
 
   const authLinks = (
@@ -61,4 +61,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);
