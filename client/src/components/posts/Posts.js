@@ -16,10 +16,6 @@ const Posts = () => {
     dispatch(getPosts());
   }, [dispatch]);
 
-  // if (!isAuthenticated) {
-  //   return <Redirect to="/login" />;
-  // }
-
   return loading ? (
     <Spinner />
   ) : (

@@ -34,6 +34,12 @@ const postReducer = (state = initialState, action) => {
         posts: action.payload,
         loading: false,
       };
+    case GET_POST:
+      return {
+        ...state,
+        post: action.payload,
+        loading: false,
+      };
     case ADD_POST:
       return {
         ...state,
@@ -51,6 +57,23 @@ const postReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        post: { ...state.post, comments: action.payload },
+        loading: false,
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          comments: state.post.comments.filter(
+            (comment) => comment._id !== action.payload
+          ),
+          loading: false,
+        },
       };
     default:
       return state;
